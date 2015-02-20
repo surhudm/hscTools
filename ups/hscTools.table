@@ -1,0 +1,8 @@
+setupRequired(hscPipe >= 3.3.3)
+
+envAppend(PYTHONPATH, ${PRODUCT_DIR}/python)
+envPrepend(PATH, ${PRODUCT_DIR}/bin)
+
+# user bin/ directories
+envPrepend(PATH, ${PRODUCT_DIR}/bick/bin)
+
