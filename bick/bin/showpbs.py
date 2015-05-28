@@ -69,8 +69,14 @@ def main():
     count = collections.defaultdict(int)
     for jid, j in jobs.items():
         count[j.user] += 1
+
+    abbreviations = set()
     for k,v in count.items():
-        print "%1s %-16s: %d" % (k[0], "("+k+")", v)
+        abbrev = k[0]
+        if abbrev in abbreviations:
+            abbrev = k[0].upper()
+        print "%1s %-16s: %d" % (abbrev, "("+k+")", v)
+        abbreviations.add(abbrev)
         
 
 if __name__ == '__main__':
