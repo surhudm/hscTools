@@ -8,10 +8,11 @@ import collections
 Job = collections.namedtuple("Job", "user queue jobname sessid nds tsk memreq timreq status elaptime")
 
 class Record(object):
-    def __init__(self, name, jobs=None):
+    def __init__(self, name, jobs=None, abbreviations=None):
         self.name = name
         self.data = {"np": 0, "jobs": {}}
         self.jobs = jobs
+        self.abbreviations = abbreviations
         
     def update(self, line):
         line = line.strip()
@@ -33,7 +34,9 @@ class Record(object):
         jobs = 0
         for jobid,count in self.data['jobs'].items():
             if self.jobs:
-                node_str += self.jobs[jobid].user.lower()[0]*count
+                user = self.jobs[jobid].user
+                abbrev = self.abbreviations.get(user, user.lower()[0])
+                node_str += abbrev*count
             else:
                 node_str += "*"*count
             jobs += count
@@ -50,14 +53,23 @@ def main():
             fields = line.split()
             jobs[fields[0]] = Job(*fields[1:])
 
-            
+    user_job_count = collections.Counter([j.user for j in jobs.values()])
+
+    abbreviations = {}
+    for user,n in user_job_count.items():
+        abbrev = user[0]
+        if abbrev in abbreviations:
+            abbrev = user[0].upper()
+        abbreviations[abbrev] = user
+    abbreviations = {v:k for k,v in abbreviations.items()}
+
     output = subprocess.check_output("pbsnodes", stderr=subprocess.STDOUT)
 
     record = None
     records = []
     for line in output.split('\n'):
         if re.match("^\w", line):
-            record = Record(line.strip(), jobs)
+            record = Record(line.strip(), jobs, abbreviations)
             records.append(record)
         else:
             record.update(line)
@@ -66,17 +78,9 @@ def main():
         print r
 
     print ""
-    count = collections.defaultdict(int)
-    for jid, j in jobs.items():
-        count[j.user] += 1
-
-    abbreviations = set()
-    for k,v in count.items():
-        abbrev = k[0]
-        if abbrev in abbreviations:
-            abbrev = k[0].upper()
-        print "%1s %-16s: %d" % (abbrev, "("+k+")", v)
-        abbreviations.add(abbrev)
+    for user,n in user_job_count.items():
+        abbrev = abbreviations[user]
+        print "%1s %-16s: %d" % (abbrev, "("+user+")", n)
         
 
 if __name__ == '__main__':
