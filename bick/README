@@ -1,0 +1,85 @@
+
+
+#### showVisitsInTract.py
+
+This will generate a figure showing each input visit in a separate panel.  Panels have the same scale
+and range.
+
+Warning: This can be extremely slow.  It needs to load the input info for each patch requested, and
+then the ccd positions for each visit.
+
+E.g.
+
+$ showVisitsInTract.py /lustre/Subaru/SSP/rerun/bick/cosmos333 0 -v 1230..1238:2 -o foo.png
+
+
+#### visitOverlap.py
+
+This will show the footprints of the requested visits with a low alpha parameter so the overlap
+can easily be seen.
+
+E.g. 
+
+# set the DATA_PATH variable to indicate where to look for reruns
+$ export DATA_PATH=/lustre/Subaru/SSP/rerun/bick:/lustre/Subaru/SSP/rerun/yasuda
+
+$ visitOverlap.py 1232^1236 cosmos333 -o bar.png
+
+#### showVisit.py
+
+Show specified CCDs from a visit.
+
+E.g.
+
+$ showVisit.py cosmos333 1236 41^42^49^50^57^58 -s histeq -d calexp
+
+
+#### camPlot.py
+
+Show per-CCD values listed in a text file as a focal plane image.  CCD is column 1, value is column 2, and (optionally) amp is column 3.
+
+E.g.
+
+# make some fake data (color-code each CCD by its number):
+$ seq 0 103 | awk '{print $1, $1}' > fake.dat
+
+$ camPlot.py fake.dat -o fake.png
+
+
+#### mtv.py
+
+Send a FITS file to an open DS-9 viewer.
+
+E.g. 
+
+$ mtv.py file.fits
+
+
+#### ptest.sh
+
+Print a summary of the unit tests, assuming LSST/HSC style unit testing (test results written in
+<pkg>/tests/.tests/
+
+
+E.g.
+
+$ ptest.sh
+
+
+#### showpbs.py
+
+Show the cluster usage with an ascii graph.  Each node is shown on one line, and different user's
+are indicated with the first character of their UID.
+
+$ showpbs.py
+
+
+#### pyng.py
+
+Ping multiple machines and show results in bulk.  This uses python multiprocessing, and subprocess
+to run the system ping command for each requested node.  This is useful after rebooting nodes as
+it lets you see which nodes are coming up.
+
+# on master ... 192.168.0.101 to 192.168.0.140
+$ pyng.py -a -c -t -s 101 192.168.0 40
+
