@@ -13,10 +13,10 @@ import pyfits
 
 import lsst.daf.persistence as dafPer
 import lsst.afw.table as afwTable
-import lssttools.utils as lsstUtil
 import lsst.afw.geom as afwGeom
 import lsst.afw.image as afwImage
 
+import hsc.tools.bick.utils as hscUtil
 
 def loadRaDec(data):
     """
@@ -118,8 +118,8 @@ if __name__ == '__main__':
                         type=int, default=20, help='pixel radius to avoid')
 
     args = parser.parse_args()
-    visits = lsstUtil.idSplit(args.visits)
-    ccds = lsstUtil.idSplit(args.ccds)
+    visits = hscUtil.idSplit(args.visits)
+    ccds = hscUtil.idSplit(args.ccds)
     if args.filt is None:
          dataIds = [{'visit':v, 'ccd':c} for c in ccds for v in visits]
     else:

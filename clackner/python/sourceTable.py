@@ -14,7 +14,7 @@ import numpy as np
 
 import lsst.daf.persistence as dafPer
 import lsst.afw.table as afwTable
-import lssttools.utils as lsstUtil
+import hsc.tools.bick.utils as hscUtil
 
 def main(rerun, dataIds, root='/lustre/Subaru/SSP', fakes=None):
     
@@ -76,8 +76,8 @@ if __name__ == '__main__':
     parser.add_argument('-k', '--fakes', default=None, help='fake catalog to exclude')
 
     args = parser.parse_args()
-    visits = lsstUtil.idSplit(args.visits)
-    ccds = lsstUtil.idSplit(args.ccds)
+    visits = hscUtil.idSplit(args.visits)
+    ccds = hscUtil.idSplit(args.ccds)
     if args.filt is None:
          dataIds = [{'visit':v, 'ccd':c} for c in ccds for v in visits]
     else:
