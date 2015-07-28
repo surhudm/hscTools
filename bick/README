@@ -45,6 +45,12 @@ $ seq 0 103 | awk '{print $1, $1}' > fake.dat
 
 $ camPlot.py fake.dat -o fake.png
 
+#### hscOverlay.py
+
+Take a regular PNG and make it look like it was taken with HSC.
+
+$ hscOverlap.py image.png -o image-hsc.png
+
 
 #### mtv.py
 
