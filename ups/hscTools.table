@@ -5,4 +5,7 @@ envPrepend(PATH, ${PRODUCT_DIR}/bin)
 
 # user bin/ directories
 envPrepend(PATH, ${PRODUCT_DIR}/bick/bin)
+envPrepend(PATH, ${PRODUCT_DIR}/clackner/bin)
+envPrepend(PATH, ${PRODUCT_DIR}/song/bin)
+envPrepend(PATH, ${PRODUCT_DIR}/surhud/bin)
 
